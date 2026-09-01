@@ -2,7 +2,7 @@ import {View, Text, Button} from 'react-native'
 import {sair} from '../services/auth'
 import {auth} from '../services/auth'
 
-export default function Home(navigation){
+export default function Home({navigation}){
 
     async function realizarLogout()
     {
