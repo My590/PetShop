@@ -1,11 +1,11 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigation } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Login from './screens/Login'
 import Cadastro from './screens/Cadastro'
 import Home from './screens/Home'
 
-const Stack = createNativeStackNavigation()
+const Stack = createNativeStackNavigator()
 
 export default function App() {
   return (

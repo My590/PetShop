@@ -16,11 +16,11 @@ export default function Login({navigation}){
 
         try 
         {
-            await cadastrar (email,senha)
+            await entrar (email, senha)
             navigation.navigate('Home')
 
         } 
-        
+
         catch(error)
         {
             alert('Email ou senha incorretos.')

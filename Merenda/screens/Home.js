@@ -1,6 +1,6 @@
 import {View, Text, Button} from 'react-native'
 import {sair} from '../services/auth'
-import {auth} from '../services/auth'
+import {auth} from '../config/firebase'
 
 export default function Home({navigation}){
 
@@ -14,7 +14,7 @@ export default function Home({navigation}){
         <View>
             <Text> Seja bem-vindo(a)</Text>
 
-            <Text> Usuário: {auth.currentUser?.email } </Text>
+            <Text> Usuário: {auth.currentUser?.email} </Text>
 
             <Button>
                 title = "Sair"
