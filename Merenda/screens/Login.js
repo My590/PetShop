@@ -1,9 +1,32 @@
 import {View, Text, TextInput, Button, Alert} from 'react-native'
 import {useState} from 'react'
+import {entrar} from '../services/auth'
 
 export default function Login({navigation}){
     const [email, setEmail] = useState ('')
     const [senha, setSenha] = useState ('')
+
+    async function realizarLogin()
+    {
+        if(!email || !senha)
+        {
+            alert('Preencha todos os campos')
+            return
+        }
+
+        try 
+        {
+            await cadastrar (email,senha)
+            navigation.navigate('Home')
+
+        } 
+        
+        catch(error)
+        {
+            alert('Email ou senha incorretos.')
+            console.log(error)
+        }
+    }
 
     return (
         <View>
@@ -26,7 +49,7 @@ export default function Login({navigation}){
         
             <Button
                 title = 'Acessar'
-                onPress = {()=>alert('Login em contrução')}
+                onPress = {realizarLogin}
             />
 
             <Button

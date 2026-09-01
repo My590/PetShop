@@ -1,9 +1,31 @@
 import {View, Text, TextInput, Button, Alert} from 'react-native'
 import {useState} from 'react'
+import {cadastrar} from '../services/auth'
 
 export default function Cadastro({navigation}){
     const [email, setEmail] = useState ('')
     const [senha, setSenha] = useState ('')
+
+    async function realizarCadastro()
+    {
+        if(!email || !senha)
+        {
+            alert('Preencha todos os campos')
+            return
+        }
+
+        try 
+        {
+            await cadastrar (email,senha)
+            alert('Usuário cadastrado!')
+            navigation.navigate('Login')
+
+        } catch(error)
+        {
+            alert('Não foi possivel cadastrar o usuário.')
+            console.log(error)
+        }
+    }
 
     return(
         <View>
@@ -26,7 +48,7 @@ export default function Cadastro({navigation}){
         
             <Button
                 title = 'Cadastrar'
-                onPress = {()=>alert('Cadastro em construção')}
+                onPress = {realizarCadastro}
             />
 
             <Button
