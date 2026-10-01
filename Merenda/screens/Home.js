@@ -16,11 +16,7 @@ export default function Home({navigation}){
 
             <Text> Usuário: {auth.currentUser?.email} </Text>
 
-            <Button>
-                title = "Sair"
-                onPress = {realizarLogout}
-    
-            </Button>
+            <Button title="Sair" onPress={realizarLogout} />
 
         </View>
     )
