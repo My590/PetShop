@@ -79,7 +79,7 @@ export default function Cadastro({ navigation }) {
                 [
                     {
                         text: 'Continuar',
-                        onPress: () => navigation.replace('Login'),
+                        onPress: () => navigation.replace('Principal'),
                     },
                 ]
             )
