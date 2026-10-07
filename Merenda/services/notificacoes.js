@@ -3,11 +3,7 @@ import * as Notifications from 'expo-notifications'
 import { Platform } from 'react-native'
 
 const STORAGE_KEY = '@petcare_notificacoes'
-const CHANNEL_ID = 'petcare-notificacoes'
-
-// ======================================================
-// CONFIGURAÇÃO PARA MOSTRAR NOTIFICAÇÕES COM O APP ABERTO
-// ======================================================
+const CHANNEL_ID = 'petcare-notificacoes-v2'
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -18,13 +14,8 @@ Notifications.setNotificationHandler({
   }),
 })
 
-// ======================================================
-// CONFIGURA AS NOTIFICAÇÕES DO CELULAR
-// ======================================================
-
 export async function configurarNotificacoes() {
   try {
-    // Android precisa de um canal de notificação
     if (Platform.OS === 'android') {
       await Notifications.setNotificationChannelAsync(
         CHANNEL_ID,
@@ -32,18 +23,16 @@ export async function configurarNotificacoes() {
           name: 'Notificações do PetCare',
           importance: Notifications.AndroidImportance.HIGH,
           vibrationPattern: [0, 250, 250, 250],
-          sound: 'default',
+
         }
       )
     }
 
-    // Verifica se já temos permissão
     const permissoesAtuais =
       await Notifications.getPermissionsAsync()
 
     let status = permissoesAtuais.status
 
-    // Se ainda não tiver, solicita
     if (status !== 'granted') {
       const permissoes =
         await Notifications.requestPermissionsAsync()
@@ -74,10 +63,6 @@ export async function configurarNotificacoes() {
   }
 }
 
-// ======================================================
-// BUSCA AS NOTIFICAÇÕES DA TELA "NOTIFICAÇÕES"
-// ======================================================
-
 export async function obterNotificacoes(usuarioId) {
   try {
     if (!usuarioId) {
@@ -107,10 +92,6 @@ export async function obterNotificacoes(usuarioId) {
   }
 }
 
-// ======================================================
-// SALVA A NOTIFICAÇÃO + ENVIA PARA A BARRA DO CELULAR
-// ======================================================
-
 export async function salvarNotificacao(notificacao) {
   try {
     if (!notificacao.usuarioId) {
@@ -120,10 +101,6 @@ export async function salvarNotificacao(notificacao) {
 
       return null
     }
-
-    // --------------------------------------------------
-    // 1. SALVA NO SISTEMA INTERNO DO APP
-    // --------------------------------------------------
 
     const dados =
       await AsyncStorage.getItem(STORAGE_KEY)
@@ -166,16 +143,8 @@ export async function salvarNotificacao(notificacao) {
       JSON.stringify(atualizadas)
     )
 
-    // --------------------------------------------------
-    // 2. CONFIGURA PERMISSÕES
-    // --------------------------------------------------
-
     const permitido =
       await configurarNotificacoes()
-
-    // --------------------------------------------------
-    // 3. ENVIA A NOTIFICAÇÃO PARA O CELULAR
-    // --------------------------------------------------
 
     if (permitido) {
       try {
@@ -184,6 +153,7 @@ export async function salvarNotificacao(notificacao) {
             content: {
               title: notificacao.title,
               body: notificacao.body,
+          channelId: CHANNEL_ID,
 
               data: {
                 notificacaoId: nova.id,
@@ -194,10 +164,9 @@ export async function salvarNotificacao(notificacao) {
                   'geral',
               },
 
-              sound: 'default',
+
             },
 
-            // null = mostrar imediatamente
             trigger: null,
           })
 
@@ -223,10 +192,6 @@ export async function salvarNotificacao(notificacao) {
     return null
   }
 }
-
-// ======================================================
-// MARCA UMA NOTIFICAÇÃO COMO LIDA
-// ======================================================
 
 export async function marcarComoLida(
   id,
@@ -275,10 +240,6 @@ export async function marcarComoLida(
     return []
   }
 }
-
-// ======================================================
-// MARCA TODAS COMO LIDAS
-// ======================================================
 
 export async function marcarTodasComoLidas(
   usuarioId
